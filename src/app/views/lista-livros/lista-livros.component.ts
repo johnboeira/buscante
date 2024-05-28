@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription, filter, map, switchMap } from 'rxjs';
+import { Subscription, debounceTime, filter, map, switchMap } from 'rxjs';
 import { Livro } from 'src/app/models/interfaces';
 import { LivroVolumeInfo } from 'src/app/models/livroVolumeInfo';
 import { LivroService } from 'src/app/service/livro.service';
+
+const TEMPOESPERA = 300;
 
 @Component({
   selector: 'app-lista-livros',
@@ -17,6 +19,7 @@ export class ListaLivrosComponent {
   constructor(private service: LivroService) { }
 
   livrosEncontrados$ = this.campoBusca.valueChanges.pipe(
+    debounceTime(TEMPOESPERA),
     filter((valorDigitado) => valorDigitado.length > 3),
     switchMap((valorDigitaCompleto)=> this.service.buscar(valorDigitaCompleto)),
     map((itens) =>
