@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subscription, debounceTime, filter, map, switchMap } from 'rxjs';
+import { Subscription, catchError, debounceTime, filter, map, switchMap, throwError } from 'rxjs';
 import { Livro } from 'src/app/models/interfaces';
 import { LivroVolumeInfo } from 'src/app/models/livroVolumeInfo';
 import { LivroService } from 'src/app/service/livro.service';
@@ -24,6 +24,12 @@ export class ListaLivrosComponent {
     switchMap((valorDigitaCompleto)=> this.service.buscar(valorDigitaCompleto)),
     map((itens) =>
       this.livrosResultadoParaLivros(itens)
+    ),
+    catchError(erro => {
+      console.log(erro)
+      return throwError(() => new Error('Ops um erro!'))
+    }
+
     )
   )
 

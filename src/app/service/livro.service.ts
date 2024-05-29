@@ -9,7 +9,7 @@ import { LivrosResultado } from '../models/interfaces';
 })
 export class LivroService {
 
-  private readonly API = 'https://www.googleapis.com/books/v1/volumes'
+  private readonly API = 'https://www.googleapis.com/books/v1/volume'
   constructor(private http: HttpClient) { }
 
   buscar(valorDigitado: string): Observable<Item[]> {
