@@ -9,15 +9,11 @@ import { LivrosResultado } from '../models/interfaces';
 })
 export class LivroService {
 
-  private readonly API = 'https://www.googleapis.com/books/v1/volume'
+  private readonly API = 'https://www.googleapis.com/books/v1/volumes'
   constructor(private http: HttpClient) { }
 
-  buscar(valorDigitado: string): Observable<Item[]> {
+  buscar(valorDigitado: string): Observable<LivrosResultado> {
     const params = new HttpParams().append('q', valorDigitado )
-    return this.http.get<LivrosResultado>(this.API, { params }).pipe(
-      tap((retorno: any) => console.log(retorno)),
-      map(retorno => retorno.items),
-      tap((retorno: any) => console.log('retorno pós map', retorno)),
-    )
+    return this.http.get<LivrosResultado>(this.API, { params })
   }
 }
